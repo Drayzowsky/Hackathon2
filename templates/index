@@ -1,0 +1,57 @@
+{% extends "bootstrap/base.html" %}
+​
+{% block title %}
+Hackathon2
+{% endblock %}
+​
+{% block styles %}
+{{super()}}
+<link rel="stylesheet" href="{{url_for('.static', filename='index.css')}}">
+{% endblock %}
+​
+{% block content %}
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+          <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('login') }}">Login</a></li>
+            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
+          </ul>
+      </div>
+    </nav>
+{% endblock %}
+=======
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Hackathon</title>
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+​
+​
+</head>
+<body>
+	<section>
+		<div class="container">
+			<div class="form sign_up_form">
+				<form>
+					<h1>Sign Up</h1>
+					<p>Please enter your full name, email and password</p>
+					<input type="text" name="full name" placeholder="full name" required>
+					<input type="email" name="email" placeholder="email" required>
+					<input type="password" name="password" placeholder="password" required>
+					<button class="submit buttonUp" type="button">Submit</button>
+				</form>
+			</div>
+			<div class="form sign_in_form">
+				<form>
+					<h1>Sign In</h1>
+					<p>Please enter your full name and password</p>
+					<input type="text" name="full name" placeholder="full name" required>
+					<input type="password" name="password" placeholder="password" required>
+					<button class="submit buttonIn" type="button">Submit</button>
+				</form>
+			</div>
+		</div>
+	</section>
+	<script type="text/javascript" src="hackathon1.js"></script>
+</body>
+</html>
