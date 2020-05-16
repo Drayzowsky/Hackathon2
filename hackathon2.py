@@ -1,9 +1,10 @@
-from flask import Flask, render_template, url_for
+from flask import Flask, render_template
 from flask_sqlalchemy import SQLAlchemy
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField
 from wtforms.validators import DataRequired, Email, Length
 from flask_bootstrap import Bootstrap
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "thisissecretpassword"
@@ -45,7 +46,11 @@ def index():
 def login():
     form = Login()
     if form.validate_on_submit():
-        return form.username.data
+        user = User.query.filter_by(username=form.username.data).first()
+        if user:
+            if user.password == form.password.data:
+                return form.username.data
+            return "<h1>Enter valid username/password</h1>"
 
     return render_template("login.html", form=form)
 
@@ -58,7 +63,7 @@ def signup():
                         email=form.email.data, password=form.password.data)
         db.session.add(new_user)
         db.session.commit()
-        return form.username.data
+        return "<h1>New user has been created!</h1>"
 
     return render_template("signup.html", form=form)
 
