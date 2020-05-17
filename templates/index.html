@@ -6,52 +6,84 @@ Hackathon2
 ​
 {% block styles %}
 {{super()}}
-<link rel="stylesheet" href="{{url_for('.static', filename='index.css')}}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/app.css') }}">
+{% endblock %}
+​
+{% block content %}
+<div class="site-wrapper">
+          <div class="site-wrapper-inner">
+            <div class="cover-container">
+​
+              <header class="masthead clearfix">
+                <div class="inner">
+                  <nav class="nav nav-masthead">
+                    <a href="{{ url_for('login') }}">Login</a>
+                    <a href="{{ url_for('signup') }}">Sign Up</a>
+​
+                  </nav>
+                </div>
+              </header>
+​
+              <main role="main" class="inner cover">
+                  <img class="cover-heading" src="static/logo1.jpeg" alt="">
+                  <h1 class="cover-heading">About us</h1>
+                  <p class="lead">We build this company to try to stop the domestic violence because every 48 hours one women die under the blows of her spouse</p>
+              </main>
+​
+              <footer class="mastfoot">
+              </footer>
+​
+            </div>
+          </div>
+        </div>
+​
+        <div class="chatbubble">
+            <div class="unexpanded">
+                <div class="title">Chat with Support</div>
+            </div>
+            <div class="expanded chat-window">
+              <div class="login-screen container">
+                <form id="loginScreenForm">
+                  <div class="form-group">
+                    <input type="text" class="form-control" id="fullname" placeholder="Name*" required>
+                  </div>
+                  <div class="form-group">
+                    <input type="email" class="form-control" id="email" placeholder="Email Address*" required>
+                  </div>
+                  <button type="submit" class="btn btn-block btn-primary">Start Chat</button>
+                </form>
+              </div>
+              <div class="chats">
+                <div class="loader-wrapper">
+                  <div class="loader">
+                    <span>{</span><span>}</span>
+                  </div>
+                </div>
+                <ul class="messages clearfix">
+                </ul>
+                <div class="input">
+                  <form class="form-inline" id="messageSupport">
+                    <div class="form-group">
+                      <input type="text" autocomplete="off" class="form-control" id="newMessage" placeholder="Enter Message">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Send</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+        </div>
+​
+        <script src="https://js.pusher.com/4.0/pusher.min.js"></script>
+        <script src="{{ url_for('static', filename='js/jquery.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/popper.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/bootstrap.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/axios.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 {% endblock %}
 
-{% block content %}
-    <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
-          <ul class="nav navbar-nav">
-            <li><a href="{{ url_for('login') }}">Login</a></li>
-            <li><a href="{{ url_for('signup') }}">Sign Up</a></li>
-          </ul>
-      </div>
-    </nav>
-{% endblock %}
-=======
-<!DOCTYPE html>
-<html>
-<head>
-	<title>Hackathon</title>
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-​
-​
-</head>
-<body>
-	<section>
-		<div class="container">
-			<div class="form sign_up_form">
-				<form>
-					<h1>Sign Up</h1>
-					<p>Please enter your full name, email and password</p>
-					<input type="text" name="full name" placeholder="full name" required>
-					<input type="email" name="email" placeholder="email" required>
-					<input type="password" name="password" placeholder="password" required>
-					<button class="submit buttonUp" type="button">Submit</button>
-				</form>
-			</div>
-			<div class="form sign_in_form">
-				<form>
-					<h1>Sign In</h1>
-					<p>Please enter your full name and password</p>
-					<input type="text" name="full name" placeholder="full name" required>
-					<input type="password" name="password" placeholder="password" required>
-					<button class="submit buttonIn" type="button">Submit</button>
-				</form>
-			</div>
-		</div>
-	</section>
-	<script type="text/javascript" src="hackathon1.js"></script>
-</body>
-</html>
+
+
+
+
+
