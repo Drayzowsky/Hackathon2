@@ -7,6 +7,9 @@ from flask_bootstrap import Bootstrap
 from flask_cors import CORS
 from pusher import pusher
 import simplejson
+import smtplib
+from email.mime.text import MIMEText
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "thisissecretpassword"
@@ -16,6 +19,26 @@ db = SQLAlchemy(app)
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
 
+# Config Email
+def send_mail(sender, message_text):
+    port = 2525
+    smtp_server = 'smtp.mailtrap.io'
+    login = '6f81d3b3a9f427'
+    password = '962126345fe344'
+    message = f"SOS I need your help, this is my adress {message_text}"
+
+    sender_email = sender
+    receiver_email = 'hackathon@example.com'
+    msg = MIMEText(message, 'html')
+    msg['Subject'] = 'Alert'
+    msg['From'] = sender_email
+    msg['To'] = receiver_email
+
+    # Send email
+    with smtplib.SMTP(smtp_server, port) as server:
+        server.login(login, password)
+        server.sendmail(sender_email, receiver_email, msg.as_string())
+
 # configure pusher object
 pusher = pusher.Pusher(
 app_id="1002493",
@@ -23,6 +46,9 @@ key="792745e0907fdb507199",
 secret="c9c5693de1185d9d3164",
 cluster="ap2",
 ssl=True)
+
+
+
 
 class User(db.Model):
     __tablename__ = "user"
@@ -40,7 +66,7 @@ class User(db.Model):
 
 
 class Login(FlaskForm):
-    username = StringField('Username', validators=[DataRequired(), Length(min=3, max=20)])
+    email = StringField('Email', validators=[DataRequired(), Length(max=50)])
     password = PasswordField('Password', validators=[DataRequired(), Length(min=8, max=100)])
 
 
@@ -60,6 +86,8 @@ def index():
     return render_template("index.html")
 
 
+
+
 @app.route('/admin')
 def admin():
     return render_template('admin.html')
@@ -77,7 +105,7 @@ def guestUser():
 
 @app.route("/pusher/auth", methods=['POST'])
 def pusher_authentication():
-    auth = pusher.authenticate(channel=request.form['channel_name'],socket_id=request.form['socket_id'])
+    auth = pusher.authenticate(channel=request.form['channel_name'], socket_id=request.form['socket_id'])
     return json.dumps(auth)
 
 
@@ -85,10 +113,11 @@ def pusher_authentication():
 def login():
     form = Login()
     if form.validate_on_submit():
-        user = User.query.filter_by(username=form.username.data).first()
+        user = User.query.filter_by(email=form.email.data).first()
         if user:
             if user.password == form.password.data:
-                return form.username.data
+                send_mail(user.email, user.adress)
+                return "Success, SOS sent"
             return "<h1>Enter valid username/password</h1>"
 
     return render_template("login.html", form=form)
@@ -102,7 +131,7 @@ def signup():
                         email=form.email.data, password=form.password.data)
         db.session.add(new_user)
         db.session.commit()
-        return "<h1>New user has been created!</h1>"
+        return render_template("index.html")
 
     return render_template("signup.html", form=form)
 
